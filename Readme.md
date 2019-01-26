@@ -9,4 +9,3 @@ Enable ARGOS Gnome Extension
 Download SimpleWattage-Argos and put it in ~/.config/argos folder
 
 Enjoy
-https://github.com/iSonik/SimpleWattage-Argos/blob/master/SimpleWattage.5s.s

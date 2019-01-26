@@ -10,8 +10,5 @@ Wattage=$(($mV*$mA))
 
 	echo "More Information"
 	echo -n "Voltage: ";echo "scale=10; $mV/1000000" | bc | xargs printf "%.3f\n"
-	echo -n "Ampere: ";echo "scale=10; $mA/1000000" | bc | xargs printf "%.3f\n"
-
-	echo -n "W: ";echo "scale=10; $Wattage/1000000000000" | bc | xargs printf "%.2f\n"; 
-	
+	echo -n "Ampere: ";echo "scale=10; $mA/1000000" | bc | xargs printf "%.3f\n"	
 done

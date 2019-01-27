@@ -1,34 +1,35 @@
 #!/bin/bash
 
-
-
-
-mV=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT0/voltage_now)
-mA=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT0/current_now)
-FDesign=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT0/charge_full_design)
-FDesignnow=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT0/charge_full)
+mV=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT*/voltage_now)
+mA=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT*/current_now)
+FDesign=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT*/charge_full_design)
+FDesignnow=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT*/charge_full)
+Status=$(tail /sys/class/power_supply/BAT*/device/power_supply/BAT0*/status)
 Health=$((($FDesign-$FDesignnow)/100))
 Healthnow=$((($FDesignnow*100)/FDesign))
 FDesign2=$(($FDesign / 1000))
 Wattage=$(($mV*$mA))
-Status=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT0/status)
+
 
 # Thanks to mmuman
-if [ "$Wattage" = 0 ]; then
+
+if [ "$Wattage" = 0 ] && [ $Status = "Charging" ]; then
 	echo "🕛 loading"	
 
 else
-	if [ "$Wattage" = 0 ] && [ $Status = "Charging" ]; then
-		echo "🔌 Charging"	
+	if [ "$Wattage" = 0 ] && [ $Status = "Full" ]; then
+		echo "🔌 100%"	
 	else
 		echo -n "⚡  " ;echo "scale=10; $Wattage/1000000000000" | bc | xargs printf "%.2fW\n";
 fi
 fi
 	echo ---
-if [ "$Wattage" = 0 ] && [ $Status = "Charging" ]; then
+if [ "$Wattage" = 0 ] && [ $Status = "Full" ]; then
 	echo "⚡ Power Info| size=12"
+	echo -n "Voltage: ";echo "scale=10; $mV/1000000" | bc | xargs printf "%.3fV\n"
 else
 	echo "⚡ Power Info| size=12"
+
 	echo -n "Voltage: ";echo "scale=10; $mV/1000000" | bc | xargs printf "%.3fV\n"
 	echo -n "Ampere: ";echo "scale=10; $mA/1000000" | bc | xargs printf "%.3fA\n"	
 fi
@@ -36,7 +37,13 @@ fi
 if [ $Status = "Charging" ]; then
 	echo "🔌 Plugged in | color=yellow"
 else
+	if [ $Status = "Charging" ]; then
 	echo "🔋On Battery | color=yellow"
+	else
+		if [ $Status = "Full" ]; then
+		echo "🔌 Plugged in | color=yellow"
+fi
+fi
 fi
 
 

@@ -1,14 +1,31 @@
 #!/bin/bash
 
-mV=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT0/voltage_now)
-mA=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT0/current_now)
 
-Wattage=$(($mV*$mA))
 
-	echo -n "W: ";echo "scale=10; $Wattage/1000000000000" | bc | xargs printf "%.2f\n"; 
-	echo ---
+Wattage=0
+infos=""
+for b in /sys/class/power_supply/BAT*; do
+	read mV < "$b/device/power_supply/${b##*/}/voltage_now"
+	mA=0
+	if [ -e "$b/device/power_supply/${b##*/}/current_now" ]; then
+		read mA < "$b/device/power_supply/${b##*/}/current_now"
+	fi
+	Wattage=$(($Wattage + $mV*$mA))
 
-	echo "More Information"
-	echo -n "Voltage: ";echo "scale=10; $mV/1000000" | bc | xargs printf "%.3f\n"
-	echo -n "Ampere: ";echo "scale=10; $mA/1000000" | bc | xargs printf "%.3f\n"	
+infos="$infos
+${b##*/}:
+Voltage: $(echo "scale=10; $mV/1000000" | bc | xargs printf "%.3f V\n")
+Current: $(echo "scale=10; $mA/1000000" | bc | xargs printf "%.3f A\n")
+"
 done
+
+if [ "$Wattage" = 0 ]; then
+	echo "🗲🔌\n"
+else
+	echo "scale=10; $Wattage/1000000000000" | bc | xargs printf "🗲%.2fW\n";
+fi
+
+echo ---
+
+echo "More Information"
+echo "$infos"

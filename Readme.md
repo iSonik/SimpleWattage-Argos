@@ -1,4 +1,3 @@
-V2:
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/QYVPMk0/header.png" alt="header" border="0"></a>
 
 
@@ -17,10 +16,4 @@ Enjoy
 
 
 
-
-
-
-History
-V1:
-<a href="https://imgbb.com/"><img src="https://i.ibb.co/RQGmPXY/Simple-Wat.png" alt="Simple-Wat" border="0"></a>
 

@@ -11,7 +11,7 @@ Healthnow=$((($FDesignnow*100)/FDesign))
 FDesign2=$(($FDesign / 1000))
 Wattage=$(($mV*$mA))
 Wh=$(($FDesignnow*$mV))
-
+BT=$(($Wh/$Wattage))
 
 # Thanks to mmuman
 
@@ -57,11 +57,6 @@ echo "🔋Battery Info| size=12"
 echo "Battery Charge: $Level%" 
 echo -n "Watt hours: "; echo "scale=3; $Wh/1000000000000" | bc | xargs printf "%.2fWh\n"
 
-if [ "$Status" = Full ]; then
-echo ""
-else
-echo -n "Battery time left: "; echo "scale=3; $Wh/$Wattage" | bc | xargs printf "%.2fh\n"	
-fi
 
 echo ---
 

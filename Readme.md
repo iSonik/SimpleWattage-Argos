@@ -10,6 +10,16 @@ Download SimpleWattage-Argos and put it in ~/.config/argos folder
 
 Enjoy
 
+
+
+
+
+
+
+
+
+
+
 History
 V1:
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/RQGmPXY/Simple-Wat.png" alt="Simple-Wat" border="0"></a>

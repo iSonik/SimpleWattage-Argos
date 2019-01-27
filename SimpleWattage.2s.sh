@@ -11,25 +11,26 @@ Healthnow=$((($FDesignnow*100)/FDesign))
 FDesign2=$(($FDesign / 1000))
 Wattage=$(($mV*$mA))
 Wh=$(($FDesignnow*$mV))
-BT=$(($Wh/$Wattage))
 
-# Thanks to mmuman
+
 
 if [ "$Wattage" = 0 ] && [ $Status = "Charging" ]; then
-	echo "🕛 loading"	
-
-else
+	echo "🕛"	
+	else
 	if [ "$Wattage" = 0 ] && [ $Status = "Discharging" ]; then
-	echo "🕛 loading"
+	echo "🕛"
 	else
-	if [ "$Wattage" = 0 ] && [ $Status = "Full" ]; then
+		if [ "$Wattage" = 0 ] && [ $Status = "Full" ]; then
 		echo "🔌"	
-	else
+		else
 		echo -n "⚡  " ;echo "scale=10; $Wattage/1000000000000" | bc | xargs printf "%.2fW\n";
 fi
 fi
 fi
-	echo ---
+
+
+echo ---
+
 if [ "$Wattage" = 0 ] && [ $Status = "Full" ]; then
 	echo "⚡ Power Info| size=12"
 	echo -n "Voltage: ";echo "scale=10; $mV/1000000" | bc | xargs printf "%.3fV\n"

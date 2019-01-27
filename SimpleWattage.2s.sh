@@ -5,10 +5,12 @@ mA=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT*/current_now)
 FDesign=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT*/charge_full_design)
 FDesignnow=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT*/charge_full)
 Status=$(tail /sys/class/power_supply/BAT*/device/power_supply/BAT0*/status)
+Level=$(tail /sys/class/power_supply/BAT*/device/power_supply/BAT0*/capacity)
 Health=$((($FDesign-$FDesignnow)/100))
 Healthnow=$((($FDesignnow*100)/FDesign))
 FDesign2=$(($FDesign / 1000))
 Wattage=$(($mV*$mA))
+Wh=$(($FDesignnow*$mV))
 
 
 # Thanks to mmuman
@@ -17,10 +19,14 @@ if [ "$Wattage" = 0 ] && [ $Status = "Charging" ]; then
 	echo "🕛 loading"	
 
 else
+	if [ "$Wattage" = 0 ] && [ $Status = "Discharging" ]; then
+	echo "🕛 loading"
+	else
 	if [ "$Wattage" = 0 ] && [ $Status = "Full" ]; then
-		echo "🔌 100%"	
+		echo "🔌"	
 	else
 		echo -n "⚡  " ;echo "scale=10; $Wattage/1000000000000" | bc | xargs printf "%.2fW\n";
+fi
 fi
 fi
 	echo ---
@@ -46,8 +52,16 @@ fi
 fi
 fi
 
+echo ---
+echo "🔋Battery Info| size=12"
+echo "Battery Charge: $Level%" 
+echo -n "Watt hours: "; echo "scale=3; $Wh/1000000000000" | bc | xargs printf "%.2fWh\n"
 
-
+if [ "$Status" = Full ]; then
+echo ""
+else
+echo -n "Battery time left: "; echo "scale=3; $Wh/$Wattage" | bc | xargs printf "%.2fh\n"	
+fi
 
 echo ---
 

@@ -19,7 +19,12 @@ Current: $(echo "scale=10; $mA/1000000" | bc | xargs printf "%.3f A\n")
 "
 done
 
-echo "scale=10; $Wattage/1000000000000" | bc | xargs printf "🗲%.2fW\n";
+if [ "$Wattage" = 0 ]; then
+	echo "🗲🔌\n"
+else
+	echo "scale=10; $Wattage/1000000000000" | bc | xargs printf "🗲%.2fW\n";
+fi
+
 echo ---
 
 echo "More Information"

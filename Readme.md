@@ -18,3 +18,23 @@ Screenshots:<br>
 
 Enjoy
 
+
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+
+Tags: Wattage; Watt; Show Watt; Watt usage; Watt usage Ubuntu; Watch usage Gnome Shell Extension; Powerusage Gnome; Powerusage Ubuntu; Show PowerUsuage Ubuntu; Gnome Battery Info; Gnome Shell Extension
+
+

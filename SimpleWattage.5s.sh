@@ -1,18 +1,18 @@
 #!/bin/bash
 
-mV=$(cat /sys/class/power_supply/BAT*/voltage_now)
-mA=$(cat /sys/class/power_supply/BAT*/current_now)
+mV=$(tail /sys/class/power_supply/BAT*/voltage_now)
+mA=$(tail /sys/class/power_supply/BAT*/current_now)
 
 
 
-FDesign=$(cat /sys/class/power_supply/BAT*/charge_full_design)
-FDesignnew=$(cat /sys/class/power_supply/BAT*/charge_full)
-FDesignnow=$(cat /sys/class/power_supply/BAT*/charge_now)
+FDesign=$(tail /sys/class/power_supply/BAT*/charge_full_design)
+FDesignnew=$(tail /sys/class/power_supply/BAT*/charge_full)
+FDesignnow=$(tail /sys/class/power_supply/BAT*/charge_now)
 
-Status=$(cat /sys/class/power_supply/BAT*/status)
+Status=$(tail /sys/class/power_supply/BAT*/status)
 
 
-Level=$(cat /sys/class/power_supply/BAT*/capacity)
+Level=$(tail /sys/class/power_supply/BAT*/capacity)
 Health=$((($FDesignnew)/1000))
 Healthnow=$((($FDesignnew*100)/FDesign))
 FDesign2=$(($FDesign / 1000))

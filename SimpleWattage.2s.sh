@@ -21,7 +21,7 @@ if [ "$Wattage" = 0 ] && [ $Status = "Charging" ]; then
 	echo "🕛"
 	else
 		if [ "$Wattage" = 0 ] && [ $Status = "Full" ]; then
-		echo "🔌 | color=black"	
+		echo "🔌"	
 		else
 		echo -n "⚡  " ;echo "scale=10; $Wattage/1000000000000" | bc | xargs printf "%.2fW\n";
 fi

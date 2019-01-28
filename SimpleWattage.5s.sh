@@ -1,19 +1,31 @@
 #!/bin/bash
 
-mV=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT*/voltage_now)
-mA=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT*/current_now)
-FDesign=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT*/charge_full_design)
-FDesignnow=$(tail /sys/class/power_supply/BAT0/device/power_supply/BAT*/charge_full)
-Status=$(tail /sys/class/power_supply/BAT*/device/power_supply/BAT0*/status)
-Level=$(tail /sys/class/power_supply/BAT*/device/power_supply/BAT0*/capacity)
-Health=$((($FDesign-$FDesignnow)/100))
-Healthnow=$((($FDesignnow*100)/FDesign))
+mV=$(cat /sys/class/power_supply/BAT*/voltage_now)
+mA=$(cat /sys/class/power_supply/BAT*/current_now)
+
+
+
+FDesign=$(cat /sys/class/power_supply/BAT*/charge_full_design)
+FDesignnew=$(cat /sys/class/power_supply/BAT*/charge_full)
+FDesignnow=$(cat /sys/class/power_supply/BAT*/charge_now)
+
+Status=$(cat /sys/class/power_supply/BAT*/status)
+
+
+Level=$(cat /sys/class/power_supply/BAT*/capacity)
+Health=$((($FDesignnew)/1000))
+Healthnow=$((($FDesignnew*100)/FDesign))
 FDesign2=$(($FDesign / 1000))
+FDesign3=$(($FDesignnow / 1000))
+
 Wattage=$(($mV*$mA))
 Wh=$(($FDesignnow*$mV))
+Timeleft=$(($Wh / $Wattage))
 
 
-
+if [ ! "$(ls -A /sys/class/power_supply/BAT0)" ]; then
+echo "empty"
+else
 if [ "$Wattage" = 0 ] && [ $Status = "Charging" ]; then
 	echo "🕛"	
 	else
@@ -27,8 +39,7 @@ if [ "$Wattage" = 0 ] && [ $Status = "Charging" ]; then
 fi
 fi
 fi
-
-
+fi
 echo ---
 
 if [ "$Wattage" = 0 ] && [ $Status = "Full" ]; then
@@ -65,16 +76,19 @@ echo ---
 # Battery Health Section
 if [ "$Health" -lt "75" ]; then
 	echo "♥️ Battery Vitals | size=12"
-	echo "Battery Health: $Healthnow% | color=red"
+
+	echo Current Capacity: $FDesign3 mAh
 	echo Rated Capacity: $FDesign2 mAh 
-	echo Current Capacity: $Health mAh
+	echo "Actual Capacity: $Health mAh | color=red"
+	echo "Battery Health: $Healthnow% | color=red"
 	echo "Status: Your capacity is smaller than 75% ⚠️| color=red"
 	echo 
 
 else
 	echo "♥️ Battery Vitals | size=12"
-	echo Battery Health: $Healthnow%
+	echo Current Capacity: $FDesign3 mAh
 	echo Rated Capacity: $FDesign2 mAh 
-	echo Current Capacity: $Health mAh
+	echo Actual Capacity: $Health mAh
+	echo Battery Health: $Healthnow%
 	echo "Status: All is well 💚| color=green"
 fi
